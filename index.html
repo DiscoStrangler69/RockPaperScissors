@@ -4,9 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <script src="code.js"></script>
+    <div class="header"> WELCOME TO ROCK PAPER SCISSORS</div>
+    <div class="container ">
+        <button id="rock"> Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+    <div id="result">Make a choice</div>
+    <div id="score">You: 0 , Bot: 0</div>
+    <div id="winner"> </div>
+
+
+    <script>
+
+        let userScore = 0;
+        let CompScore = 0;
+        let winScore = 5;
+        const buttons = document.querySelectorAll('button');
+        const resultDisplay = document.getElementById('result');
+        const scoreDisplay = document.getElementById('score');
+        const winnerDisplay = document.getElementById('winner');
+        buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            if(userScore <= 5 && CompScore <=5){
+            const userChoice = button.id;
+            const compChoice = getComputerChoice(); 
+            const result = PlayRound(userChoice, compChoice);
+            resultDisplay.textContent = result;
+            updateScore(result);
+            
+            }
+            displayWinner(result);
+    });
+});
+
+function getComputerChoice() {
+    let n = Math.floor(Math.random() * 3) + 1;
+    if (n === 1)
+        return "rock";
+    else if (n === 2)
+        return "paper";
+    else
+        return "scissors";
+}
+
+function PlayRound(Compchoice, userChoice) {
+    const UserChoice = userChoice || ' ';
+    if (userScore >= winScore) {
+                return 'User wins the game!';
+            } else if (CompScore >= winScore) {
+                return 'Computer wins the game!';
+            }
+    if (Compchoice === UserChoice.toLowerCase())
+        return "It's a tie";
+    else if (Compchoice === "rock") {
+        if (UserChoice.toLowerCase() === "paper"){
+            
+            userScore++;
+            return "You win";
+        }
+        if (UserChoice.toLowerCase() === "scissors"){
+            
+            CompScore++;
+            return "You lose";
+        }
+    }
+    else if (Compchoice === "paper") {
+        if (UserChoice.toLowerCase() === "scissors"){
+            
+            userScore++;
+            return "You win";
+        }
+        if (UserChoice.toLowerCase() === "rock"){
+            
+            CompScore++;
+            return "You lose";
+        }
+    }
+    else if (Compchoice === "scissors") {
+        if (UserChoice.toLowerCase() === "rock"){
+            
+            userScore++;
+            return "You win";
+        }
+        if (UserChoice.toLowerCase() === "paper"){
+            
+            CompScore++;
+            return "You lose";
+        }
+    }
     
+}
+    function updateScore(result) {
+            scoreDisplay.textContent = `You: ${userScore} || Bot: ${CompScore}`;
+
+            if (userScore >= winScore || CompScore >= winScore) {
+                disableButtons();
+            }
+        }
+    function disableButtons(){
+        buttons.forEach((button) =>{
+            button.disabled = true;
+        })
+    }
+    function displayWinner(result){
+        if(userScore == winScore)
+        winnerDisplay.textContent = "CONGRATULATIONS! YOU HAVE WON!! ";
+        else if(CompScore == winScore)
+        winnerDisplay.textContent = "WHOOPS! THE COMPUTER HAS WON THE GAME";
+    }
+    </script>
 </body>
 </html>
